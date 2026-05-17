@@ -1,43 +1,33 @@
 package ru.starashchuk.shopping.service.DAO;
 
 import org.springframework.stereotype.Component;
+import ru.starashchuk.shopping.service.db.DBConnection;
 import ru.starashchuk.shopping.service.models.ReceiptItem;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+
 @Component
 public class ReceiptItemDAO {
-    private static final String URL = "";
-    private static final String password = "";
-    private static final String username = "";
-    private static Connection connection;
 
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            DriverManager.getConnection(URL, username, password);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    private final DBConnection dbConnection;
+
+    public ReceiptItemDAO(DBConnection dbConnection) {
+        this.dbConnection = dbConnection;
     }
 
-    public void save(ReceiptItem receiptItem) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO ReceiptItem(receipt, product_id, quantity, price) VALUES(?, ?, ?, ?)");
-            preparedStatement.setInt(1, receiptItem.getReceiptId());
-            preparedStatement.setInt(2, receiptItem.getProductId());
-            preparedStatement.setInt(3, receiptItem.getQuantity());
-            preparedStatement.setBigDecimal(4, receiptItem.getPrice());
-            preparedStatement.executeUpdate();
+    public void save(Connection conn, ReceiptItem receiptItem) {
+        String sql = "INSERT INTO receipt_items (receipt_id, product_id, quantity, price_each) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, receiptItem.getReceiptId());
+            ps.setInt(2, receiptItem.getProductId());
+            ps.setInt(3, receiptItem.getQuantity());
+            ps.setBigDecimal(4, receiptItem.getPrice());
+            ps.executeUpdate();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

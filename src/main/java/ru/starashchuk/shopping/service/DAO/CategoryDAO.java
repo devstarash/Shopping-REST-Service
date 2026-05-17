@@ -1,45 +1,44 @@
 package ru.starashchuk.shopping.service.DAO;
 
+import org.springframework.stereotype.Component;
+import ru.starashchuk.shopping.service.db.DBConnection;
 import ru.starashchuk.shopping.service.models.Category;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CategoryDAO {
-    private static final String URL = "";
-    private static final String username = "";
-    private static final String password = "";
-    private static Connection connection;
 
-    static {
-        try {
-            Class.forName("org.postgresql.driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            DriverManager.getConnection(URL, username, password);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    private final DBConnection dbConnection;
+
+    public CategoryDAO(DBConnection dbConnection) {
+        this.dbConnection = dbConnection;
     }
 
-    private List<Category> findAllCategories() {
+    public List<Category> findAll() {
         List<Category> categories = new ArrayList<>();
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Category");
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                Category category = new Category();
-                category.setId(result.getInt("id"));
-                category.setName(result.getString("name"));
-                categories.add(category);
+        String sql = "SELECT * FROM categories";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                categories.add(mapCategory(rs));
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return categories;
+    }
 
+    private Category mapCategory(ResultSet rs) throws SQLException {
+        Category category = new Category();
+        category.setId(rs.getInt("id"));
+        category.setName(rs.getString("name"));
+        return category;
     }
 }
