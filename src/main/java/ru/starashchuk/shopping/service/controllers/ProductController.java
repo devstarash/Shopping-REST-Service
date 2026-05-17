@@ -20,7 +20,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts(@RequestParam Integer categoryId) {
+    public List<Product> getProducts(@RequestParam(required = false) Integer categoryId) {
         if (categoryId == null) {
             return productService.findAll();
         }
