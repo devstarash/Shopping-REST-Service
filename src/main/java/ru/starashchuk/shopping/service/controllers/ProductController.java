@@ -20,8 +20,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts() {
-        return productService.findAll();
+    public List<Product> getProducts(@RequestParam Integer categoryId) {
+        if (categoryId == null) {
+            return productService.findAll();
+        }
+        return productService.findByCategoryId(categoryId);
 
     }
 
@@ -30,13 +33,7 @@ public class ProductController {
         return productService.findById(id);
     }
 
-    @GetMapping
-    public List<Product> findByCategoryId(@RequestParam Integer category) {
-        if (category == null) {
-            return productService.findAll();
-        }
-        return productService.findByCategoryId(category);
-    }
+
 
 
 }
