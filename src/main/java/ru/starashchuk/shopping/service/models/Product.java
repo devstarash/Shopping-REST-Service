@@ -1,4 +1,4 @@
-package ru.starashchuk.shopping.service.configs.models;
+package ru.starashchuk.shopping.service.models;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package ru.starashchuk.shopping.service.configs.models;
+package ru.starashchuk.shopping.service.models;
 
 public class Category {
     private int id;
