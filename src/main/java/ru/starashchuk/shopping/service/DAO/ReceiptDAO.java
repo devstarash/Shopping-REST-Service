@@ -1,41 +1,39 @@
 package ru.starashchuk.shopping.service.DAO;
 
 import org.springframework.stereotype.Component;
+import ru.starashchuk.shopping.service.db.DBConnection;
 import ru.starashchuk.shopping.service.exceptions.ReceiptCreationException;
 import ru.starashchuk.shopping.service.models.Receipt;
 
 import java.sql.*;
+
 @Component
 public class ReceiptDAO {
-    private static final String URL = "";
-    private static final String username = "";
-    private static final String password = "";
-    private static Connection connection;
 
-    static{
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            DriverManager.getConnection(URL, username, password);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    private final DBConnection dbConnection;
+
+    public ReceiptDAO(DBConnection dbConnection) {
+        this.dbConnection = dbConnection;
     }
-    public int save(Receipt receipt){
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Receipt(date) VALUES(?)");
-            preparedStatement.setTimestamp(1, Timestamp.valueOf(receipt.getDate()));
-            preparedStatement.executeUpdate();
-            ResultSet result = preparedStatement.getGeneratedKeys();
-            if (result.next()){
-                return result.getInt(1);
+
+    public int save(Connection conn, Receipt receipt) {
+        String sql = "INSERT INTO receipts (sale_date) VALUES (?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setTimestamp(1, Timestamp.valueOf(receipt.getDate()));
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);  // ← возвращаем сгенерированный id
+                } else {
+                    throw new ReceiptCreationException("Не удалось создать чек, id не получен");
+                }
             }
-            else{
-                throw new ReceiptCreationException("Не удалось создать чек");
-            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
