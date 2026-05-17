@@ -1,3 +1,5 @@
 db.url=jdbc:postgresql://localhost:5432/YOUR_DB_NAME
 db.username=YOUR_USERNAME
 db.password=YOUR_PASSWORD
+admin.username = YOUR_ADMINISTRATOR_NAME
+admin.password = YOUR_ADMINISTRATOR_PASSWORD
