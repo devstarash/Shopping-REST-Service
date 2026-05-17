@@ -3,12 +3,14 @@ package ru.starashchuk.shopping.service.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.starashchuk.shopping.service.DTO.PurchaseRequestDTO;
 import ru.starashchuk.shopping.service.DTO.PurchaseResponseDTO;
 import ru.starashchuk.shopping.service.servises.PurchaseService;
 
-@RestController("purchase")
+@RestController()
+@RequestMapping("purchases")
 public class PurchaseController {
     private PurchaseService purchaseService;
     @Autowired
