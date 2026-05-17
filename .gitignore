@@ -145,4 +145,4 @@ coverage/
 jacoco.exec
 .jacoco/
 surefire-reports/
-./main/resources/application.properties
+./src/main/resources/application.properties
