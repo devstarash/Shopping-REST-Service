@@ -18,7 +18,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts(@RequestParam(required = false) Integer categoryId) {
+    public List<Product> getProducts(@RequestParam(value = "categoryId", required = false) Integer categoryId) {
         if (categoryId == null) {
             return productService.findAll();
         }
@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public Product findById(@PathVariable int id) {
+    public Product findById(@PathVariable("id") int id) {
         return productService.findById(id);
     }
 
