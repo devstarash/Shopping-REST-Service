@@ -5,17 +5,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.starashchuk.shopping.service.DTO.PurchaseRequestDTO;
 import ru.starashchuk.shopping.service.DTO.PurchaseResponseDTO;
+import ru.starashchuk.shopping.service.servises.PurchaseService;
 
-@RestController
+@RestController("purchase")
 public class PurchaseController {
-    private PurchaseController purchaseController;
+    private PurchaseService purchaseService;
     @Autowired
-    public PurchaseController(PurchaseController purchaseController) {
-        this.purchaseController = purchaseController;
+    public PurchaseController(PurchaseService purchaseService) {
+        this.purchaseService = purchaseService;
     }
-
     public PurchaseResponseDTO purchase(@RequestBody PurchaseRequestDTO requestDTO){
-        PurchaseResponseDTO responseDTO = purchaseController.purchase(requestDTO);
+        PurchaseResponseDTO responseDTO = purchaseService.purchase(requestDTO);
         return responseDTO;
     }
 
