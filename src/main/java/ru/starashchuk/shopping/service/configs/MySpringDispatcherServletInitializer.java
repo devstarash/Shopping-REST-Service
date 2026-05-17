@@ -1,18 +1,18 @@
 package ru.starashchuk.shopping.service.configs;
 
 import jakarta.servlet.Filter;
-import org.jspecify.annotations.Nullable;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class MySpringDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
-    protected Class<?> @Nullable [] getRootConfigClasses() {
+    protected Class<?> [] getRootConfigClasses() {
         return null;
     }
 
     @Override
-    protected Class<?> @Nullable [] getServletConfigClasses() {
+    protected Class<?>  [] getServletConfigClasses() {
         return new Class[]{SpringConfig.class};
     }
 
@@ -26,6 +26,7 @@ public class MySpringDispatcherServletInitializer extends AbstractAnnotationConf
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
-        return new Filter[]{filter};
+        DelegatingFilterProxy securityFilter = new DelegatingFilterProxy("springSecurityFilterChain");
+        return new Filter[]{filter, securityFilter};
     }
 }
