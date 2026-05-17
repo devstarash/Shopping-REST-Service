@@ -1,6 +1,5 @@
 package ru.starashchuk.shopping.service.servises;
 
-import jdk.vm.ci.meta.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.starashchuk.shopping.service.DAO.ProductDAO;
@@ -12,7 +11,6 @@ import ru.starashchuk.shopping.service.DTO.PurchaseResponseDTO;
 import ru.starashchuk.shopping.service.DTO.ReceiptItemDTO;
 import ru.starashchuk.shopping.service.db.DBConnection;
 import ru.starashchuk.shopping.service.exceptions.InsufficientStockException;
-import ru.starashchuk.shopping.service.exceptions.ProductNotFoundException;
 import ru.starashchuk.shopping.service.models.Product;
 import ru.starashchuk.shopping.service.models.Receipt;
 import ru.starashchuk.shopping.service.models.ReceiptItem;
@@ -41,7 +39,7 @@ public class PurchaseService {
     }
 
     public PurchaseResponseDTO purchase(PurchaseRequestDTO request) {
-        List<PurchaseItemDTO> purchaseItems = request.getPurchaseItems();
+        List<PurchaseItemDTO> purchaseItems = request.getItems();
         Map<Integer, Product> products = new HashMap<>();
 
         for (PurchaseItemDTO item : purchaseItems) {

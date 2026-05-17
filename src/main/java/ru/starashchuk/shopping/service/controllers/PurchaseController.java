@@ -20,6 +20,7 @@ public class PurchaseController {
     @PostMapping()
     public PurchaseResponseDTO purchase(@RequestBody PurchaseRequestDTO requestDTO){
         PurchaseResponseDTO responseDTO = purchaseService.purchase(requestDTO);
+        System.out.println(responseDTO.getReceiptId());
         return responseDTO;
     }
 

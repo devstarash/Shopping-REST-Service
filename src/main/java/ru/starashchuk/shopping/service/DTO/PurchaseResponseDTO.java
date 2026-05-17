@@ -1,12 +1,16 @@
 package ru.starashchuk.shopping.service.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class PurchaseResponseDTO {
     private int receiptId;
+    @JsonProperty("saleDate")
     private LocalDateTime date;
+    @JsonProperty("items")
     private List<ReceiptItemDTO> receiptItems;
     private BigDecimal total;
 

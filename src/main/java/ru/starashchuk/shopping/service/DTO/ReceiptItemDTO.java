@@ -1,11 +1,20 @@
 package ru.starashchuk.shopping.service.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
 public class ReceiptItemDTO {
+    @JsonProperty("productName")
     private String productName;
-    private int quantity;
+
+    @JsonProperty("priceEach")
     private BigDecimal price;
+
+    @JsonProperty("quantity")
+    private int quantity;
+
+    @JsonProperty("itemTotal")
     private BigDecimal total;
 
     public ReceiptItemDTO(String productName, int quantity, BigDecimal price) {
