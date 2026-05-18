@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IndexController {
     @GetMapping("/")
     public String redirectForFrontend(){
-        return "redirect:/index.html";
+        return "forward:/index.html";
+    }
+    @GetMapping("/admin")
+    public String redirectForAdminFrontend(){
+        return "forward:/admin/index.html";
     }
 
 }
