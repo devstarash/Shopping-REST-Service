@@ -16,7 +16,7 @@ public class DBConnection {
     private String password ;
     static {
         try {
-            Class.forName("org.postgresql.Driver");  // ← явная загрузка
+            Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("PostgreSQL драйвер не найден", e);
         }

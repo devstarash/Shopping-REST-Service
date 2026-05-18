@@ -2,7 +2,7 @@ package ru.starashchuk.shopping.service.DTO;
 
 public class SoldItemDTO {
     private String productName;
-    private int quantity;
+    private int totalSold;
 
     public String getProductName() {
         return productName;
@@ -12,11 +12,11 @@ public class SoldItemDTO {
         this.productName = productName;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getTotalSold() {
+        return totalSold;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setTotalSold(int totalSold) {
+        this.totalSold = totalSold;
     }
 }
