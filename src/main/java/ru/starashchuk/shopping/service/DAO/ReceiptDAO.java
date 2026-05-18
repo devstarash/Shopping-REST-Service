@@ -2,6 +2,7 @@ package ru.starashchuk.shopping.service.DAO;
 
 import org.springframework.stereotype.Component;
 import ru.starashchuk.shopping.service.db.DBConnection;
+import ru.starashchuk.shopping.service.exceptions.DatabaseException;
 import ru.starashchuk.shopping.service.exceptions.ReceiptCreationException;
 import ru.starashchuk.shopping.service.models.Receipt;
 
@@ -28,14 +29,14 @@ public class ReceiptDAO {
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1);  // ← возвращаем сгенерированный id
+                    return rs.getInt(1);
                 } else {
                     throw new ReceiptCreationException("Не удалось создать чек, id не получен");
                 }
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException("Ошибка базы данных", e);
         }
     }
 }
