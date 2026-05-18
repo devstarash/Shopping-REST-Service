@@ -2,6 +2,7 @@ package ru.starashchuk.shopping.service.DAO;
 
 import org.springframework.stereotype.Component;
 import ru.starashchuk.shopping.service.db.DBConnection;
+import ru.starashchuk.shopping.service.exceptions.DatabaseException;
 import ru.starashchuk.shopping.service.models.ReceiptItem;
 
 import java.sql.*;
@@ -27,7 +28,7 @@ public class ReceiptItemDAO {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException("Ошибка базы данных", e);
         }
     }
 }

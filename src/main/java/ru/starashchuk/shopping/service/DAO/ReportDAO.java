@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.starashchuk.shopping.service.DTO.SoldItemDTO;
 import ru.starashchuk.shopping.service.db.DBConnection;
+import ru.starashchuk.shopping.service.exceptions.DatabaseException;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -32,7 +33,7 @@ public class ReportDAO {
                 return result.getBigDecimal("revenue");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException("Ошибка базы данных", e);
         }
         return BigDecimal.ZERO;
 
@@ -53,12 +54,12 @@ public class ReportDAO {
             while (result.next()) {
                 SoldItemDTO soldItem = new SoldItemDTO();
                 soldItem.setProductName(result.getString("name"));
-                soldItem.setQuantity(result.getInt("total_sold"));
+                soldItem.setTotalSold(result.getInt("total_sold"));
                 soldItems.add(soldItem);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException("Ошибка базы данных", e);
         }
         return soldItems;
     }
