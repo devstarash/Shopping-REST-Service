@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -27,13 +28,24 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/images/**", "/favicon.ico")
+                        .permitAll()
+                        .requestMatchers("/admin/index.html").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+
+                .exceptionHandling(exception -> exception
+                        .defaultAuthenticationEntryPointFor(
+                                new org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint("/admin/index.html"),
+                                new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/admin/**")
+                        )
+                );
         return http.build();
     }
-    @Bean
+
+        @Bean
     public UserDetailsService users(){
         UserDetails admin = User.builder()
                 .username(adminUsername)
