@@ -29,8 +29,6 @@ public class GlobalExceptionHandler {
         return Map.of("message", "Ошибка базы данных");
     }
 
-    // ← добавить всё ниже
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Map<String, String> handleUnauthorized(UnauthorizedException e) {
@@ -61,7 +59,6 @@ public class GlobalExceptionHandler {
         return Map.of("message", e.getMessage());
     }
 
-    // ← этот всегда последним
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> handleException(Exception e) {

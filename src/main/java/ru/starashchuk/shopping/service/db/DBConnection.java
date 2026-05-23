@@ -17,6 +17,14 @@ public class DBConnection {
     @Value(value = "${db.password}")
     private String password;
 
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("PostgreSQL драйвер не найден", e);
+        }
+    }
+
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, username, password);
     }
