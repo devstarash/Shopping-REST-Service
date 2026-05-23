@@ -1,5 +1,6 @@
 package ru.starashchuk.shopping.service.DAO;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.starashchuk.shopping.service.db.DBConnection;
@@ -15,7 +16,6 @@ import java.sql.SQLException;
 @Component
 public class UserDAO {
     private DBConnection dbConnection;
-
     @Autowired
     public UserDAO(DBConnection dbConnection) {
         this.dbConnection = dbConnection;
@@ -67,6 +67,32 @@ public class UserDAO {
             } else {
                 throw new UserNotFoundException("Пользователь с таким email не найден");
             }
+        } catch (SQLException e) {
+            throw new DatabaseException("Ошибка базы данных", e);
+        }
+    }
+
+    public boolean existsByUsername(String username) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            ResultSet result = statement.executeQuery();
+            result.next();
+            return result.getInt(1) > 0;
+        } catch (SQLException e) {
+            throw new DatabaseException("Ошибка базы данных", e);
+        }
+    }
+
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            ResultSet result = statement.executeQuery();
+            result.next();
+            return result.getInt(1) > 0;
         } catch (SQLException e) {
             throw new DatabaseException("Ошибка базы данных", e);
         }
