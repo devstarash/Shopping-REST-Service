@@ -18,13 +18,14 @@ public class ReceiptDAO {
     }
 
     public int save(Connection conn, Receipt receipt) {
-        String sql = "INSERT INTO receipts (sale_date) VALUES (?)";
+        String sql = "INSERT INTO receipts (sale_date, user_id) VALUES (?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(
                 sql,
                 Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setTimestamp(1, Timestamp.valueOf(receipt.getDate()));
+            ps.setInt(2, receipt.getUserId());
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {

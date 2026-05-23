@@ -38,12 +38,12 @@ public class PurchaseService {
         this.dbConnection = dbConnection;
     }
 
-    public PurchaseResponseDTO purchase(PurchaseRequestDTO request) {
+    public PurchaseResponseDTO purchase(PurchaseRequestDTO request, int userId) {
         List<PurchaseItemDTO> purchaseItems = request.getItems();
         Map<Integer, Product> products = new HashMap<>();
 
         for (PurchaseItemDTO item : purchaseItems) {
-            Product product = productDAO.findById(item.getProductId());  // сам бросит если null
+            Product product = productDAO.findById(item.getProductId());
 
             if (product.getStock() < item.getQuantity()) {
                 throw new InsufficientStockException(
@@ -60,6 +60,7 @@ public class PurchaseService {
             try {
                 Receipt receipt = new Receipt();
                 receipt.setDate(LocalDateTime.now());
+                receipt.setUserId(userId);
                 int receiptId = receiptDAO.save(connection, receipt);
 
                 List<ReceiptItemDTO> receiptItems = new ArrayList<>();
