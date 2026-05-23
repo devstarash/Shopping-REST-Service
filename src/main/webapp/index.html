@@ -196,7 +196,6 @@
             box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
-            gap: 0;
             transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
             border: 1px solid transparent;
             animation: fadeUp 0.4s ease both;
@@ -261,6 +260,7 @@
             letter-spacing: -0.3px;
         }
 
+        /* ADD BUTTON */
         .add-btn {
             width: 34px; height: 34px;
             border-radius: 50%;
@@ -286,6 +286,44 @@
             transform: none;
         }
 
+        /* CARD QTY CONTROLS */
+        .card-qty {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            border-radius: 100px;
+            padding: 3px;
+            border: 1px solid var(--border-light);
+        }
+
+        .card-qty-btn {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: var(--white);
+            color: var(--text);
+            font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: var(--shadow-sm);
+            line-height: 1;
+        }
+        .card-qty-btn:hover {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,113,227,0.3);
+        }
+
+        .card-qty-num {
+            font-size: 0.88rem;
+            font-weight: 500;
+            min-width: 20px;
+            text-align: center;
+            color: var(--text);
+        }
+
         /* STATES */
         .state-box {
             grid-column: 1/-1;
@@ -303,7 +341,6 @@
             color: var(--text-secondary);
             font-weight: 400;
         }
-        .state-error { color: var(--danger); opacity: 1; }
 
         /* CART DRAWER */
         .overlay {
@@ -410,7 +447,7 @@
         .qty-row {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .qty-btn {
             width: 26px; height: 26px;
@@ -422,6 +459,7 @@
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.15s;
+            line-height: 1;
         }
         .qty-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
         .qty-num { font-size: 0.82rem; font-weight: 500; min-width: 18px; text-align: center; }
@@ -610,6 +648,14 @@
 <nav>
     <div class="nav-logo">Магазин</div>
     <div class="nav-right">
+
+        <div id="userInfo" style="display:none;align-items:center;gap:10px">
+            <span id="userName" style="font-size:0.82rem;color:var(--text-secondary)"></span>
+            <button onclick="logout()" style="background:none;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-secondary);cursor:pointer">Выйти</button>
+        </div>
+
+        <a href="/auth.html" id="loginBtn" style="display:none;background:none;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-secondary);text-decoration:none">Войти</a>
+
         <button class="cart-pill" onclick="toggleCart()">
             <span class="cart-icon">🛒</span>
             Корзина
@@ -653,6 +699,9 @@
             </div>
         </div>
         <div class="drawer-footer">
+            <div id="authNotice" style="display:none;background:rgba(0,113,227,0.06);border:1px solid rgba(0,113,227,0.15);border-radius:10px;padding:12px 16px;font-size:0.8rem;color:var(--text-secondary);text-align:center;line-height:1.6">
+                Войдите чтобы оформить заказ — <a href="/login.html" style="color:var(--accent);text-decoration:none;font-weight:500">войти</a> или <a href="/register.html" style="color:var(--accent);text-decoration:none;font-weight:500">зарегистрироваться</a>
+            </div>
             <div class="total-row">
                 <span class="total-label">Итого</span>
                 <span class="total-amount" id="totalAmount">0 ₽</span>
@@ -684,17 +733,19 @@
 <div class="toast" id="toast"></div>
 
 <script>
-    const BASE_URL = '';
+    const BASE_URL = 'http://localhost:8080';
     const EMOJIS = { default:'🛍️', 1:'🥛', 2:'🍞', 3:'🧃', 4:'🥦', 5:'🥩' };
 
     let cart = {};
     let products = [];
     let currentCategory = null;
+    let currentUser = null;
 
     function getEmoji(categoryId) {
         return EMOJIS[categoryId] || EMOJIS.default;
     }
 
+    // ── API ──────────────────────────────────────────
     async function fetchCategories() {
         const r = await fetch(`${BASE_URL}/categories`);
         return r.json();
@@ -718,7 +769,37 @@
         return r.json();
     }
 
+    // ── INIT ─────────────────────────────────────────
+    async function checkAuth() {
+        try {
+            const r = await fetch('/auth/me');
+            if (r.ok) {
+                currentUser = await r.json();
+                document.getElementById('userName').textContent = `Привет, ${currentUser.firstName}`;
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('loginBtn').style.display = 'none';
+            } else {
+                currentUser = null;
+                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('loginBtn').style.display = 'block';
+            }
+        } catch (e) {
+            currentUser = null;
+            document.getElementById('loginBtn').style.display = 'block';
+        }
+    }
+
+    async function logout() {
+        await fetch('/auth/logout', { method: 'POST' });
+        currentUser = null;
+        document.getElementById('userInfo').style.display = 'none';
+        document.getElementById('loginBtn').style.display = 'block';
+        showToast('Вы вышли из системы', 'success');
+        updateCartUI();
+    }
+
     async function init() {
+        await checkAuth();
         try {
             const [cats, prods] = await Promise.all([fetchCategories(), fetchProducts()]);
             products = prods;
@@ -729,13 +810,17 @@
         } catch (e) {
             document.getElementById('productsGrid').innerHTML = `
         <div class="state-box">
-          <div class="state-icon state-error">⚠️</div>
-          <div class="state-text" style="color:var(--danger)">Нет соединения с сервером<br><small style="color:var(--text-light)">${BASE_URL}</small></div>
+          <div class="state-icon">⚠️</div>
+          <div class="state-text" style="color:var(--danger)">
+            Нет соединения с сервером<br>
+            <small style="color:var(--text-light)">${BASE_URL}</small>
+          </div>
         </div>`;
             document.getElementById('heroSub').textContent = 'Ошибка загрузки';
         }
     }
 
+    // ── RENDER ───────────────────────────────────────
     function renderCategories(cats) {
         const scroll = document.getElementById('categoriesScroll');
         cats.forEach(c => {
@@ -754,7 +839,7 @@
             return;
         }
         grid.innerHTML = prods.map((p, i) => `
-      <div class="product-card" style="animation-delay:${i * 0.05}s">
+      <div class="product-card" style="animation-delay:${i * 0.05}s" id="card-${p.id}">
         <span class="product-emoji">${getEmoji(p.category?.id)}</span>
         <div class="product-cat-tag">${p.category?.name || '—'}</div>
         <div class="product-name">${p.name}</div>
@@ -763,10 +848,32 @@
         </div>
         <div class="product-bottom">
           <div class="product-price">${formatPrice(p.price)}</div>
-          <button class="add-btn" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''}>+</button>
+          <div id="ctrl-${p.id}">${renderCardControl(p)}</div>
         </div>
       </div>
     `).join('');
+    }
+
+    function renderCardControl(p) {
+        const qty = cart[p.id]?.quantity || 0;
+        if (p.stock === 0) {
+            return `<button class="add-btn" disabled title="Нет в наличии">+</button>`;
+        }
+        if (qty === 0) {
+            return `<button class="add-btn" onclick="addToCart(${p.id})">+</button>`;
+        }
+        return `
+      <div class="card-qty">
+        <button class="card-qty-btn" onclick="cartQty(${p.id}, -1)">−</button>
+        <span class="card-qty-num">${qty}</span>
+        <button class="card-qty-btn" onclick="cartQty(${p.id}, 1)">+</button>
+      </div>`;
+    }
+
+    function updateCardControl(productId) {
+        const product = products.find(p => p.id === productId);
+        const ctrl = document.getElementById(`ctrl-${productId}`);
+        if (ctrl && product) ctrl.innerHTML = renderCardControl(product);
     }
 
     async function filterCategory(categoryId, btn) {
@@ -783,24 +890,34 @@
         }
     }
 
+    // ── CART ─────────────────────────────────────────
     function addToCart(productId) {
         const product = products.find(p => p.id === productId);
         if (!product) return;
-        const cur = cart[productId]?.quantity || 0;
-        if (cur >= product.stock) { showToast(`Максимум ${product.stock} шт.`, 'error'); return; }
-        cart[productId] = { product, quantity: cur + 1 };
+        cart[productId] = { product, quantity: 1 };
         updateCartUI();
+        updateCardControl(productId);
         showToast(`${product.name} добавлен`, 'success');
     }
 
-    function updateQty(id, delta) {
-        if (!cart[id]) return;
-        const product = products.find(p => p.id === id);
-        const newQty = cart[id].quantity + delta;
-        if (newQty <= 0) { delete cart[id]; }
-        else if (product && newQty > product.stock) { showToast(`Максимум ${product.stock} шт.`, 'error'); return; }
-        else { cart[id].quantity = newQty; }
+    function cartQty(productId, delta) {
+        const product = products.find(p => p.id === productId);
+        if (!cart[productId]) return;
+        const newQty = cart[productId].quantity + delta;
+        if (newQty <= 0) {
+            delete cart[productId];
+        } else if (product && newQty > product.stock) {
+            showToast(`Максимум ${product.stock} шт.`, 'error');
+            return;
+        } else {
+            cart[productId].quantity = newQty;
+        }
         updateCartUI();
+        updateCardControl(productId);
+    }
+
+    function updateQty(productId, delta) {
+        cartQty(productId, delta);
     }
 
     function updateCartUI() {
@@ -810,11 +927,18 @@
 
         document.getElementById('cartCount').textContent = count;
         document.getElementById('totalAmount').textContent = formatPrice(total);
-        document.getElementById('checkoutBtn').disabled = !items.length;
+        const isLoggedIn = currentUser !== null;
+        const hasItems = items.length > 0;
+        document.getElementById('authNotice').style.display = (!isLoggedIn && hasItems) ? 'block' : 'none';
+        document.getElementById('checkoutBtn').disabled = !isLoggedIn || !hasItems;
 
         const el = document.getElementById('drawerItems');
         if (!items.length) {
-            el.innerHTML = `<div class="drawer-empty"><div class="drawer-empty-icon">🛒</div><span>Корзина пуста</span></div>`;
+            el.innerHTML = `
+        <div class="drawer-empty">
+          <div class="drawer-empty-icon">🛒</div>
+          <span>Корзина пуста</span>
+        </div>`;
             return;
         }
         el.innerHTML = items.map(({ product, quantity }) => `
@@ -841,13 +965,20 @@
         if (e.target === document.getElementById('overlay')) toggleCart();
     }
 
+    // ── CHECKOUT ─────────────────────────────────────
     async function checkout() {
+        if (!currentUser) {
+            window.location.href = '/auth.html';
+            return;
+        }
         const items = Object.entries(cart).map(([id, { quantity }]) => ({
             productId: parseInt(id), quantity
         }));
+
         const btn = document.getElementById('checkoutBtn');
         btn.disabled = true;
         btn.textContent = 'Оформляем...';
+
         try {
             const receipt = await postPurchase(items);
             cart = {};
@@ -864,10 +995,12 @@
         }
     }
 
+    // ── RECEIPT ──────────────────────────────────────
     function showReceipt(receipt) {
         const date = new Date(receipt.saleDate);
         document.getElementById('receiptMeta').textContent =
-            `Чек №${receipt.receiptId} · ${date.toLocaleDateString('ru')} в ${date.toLocaleTimeString('ru', {hour:'2-digit',minute:'2-digit'})}`;
+            `Чек №${receipt.receiptId} · ${date.toLocaleDateString('ru')} в ${date.toLocaleTimeString('ru', {hour:'2-digit', minute:'2-digit'})}`;
+
         document.getElementById('receiptItems').innerHTML = receipt.items.map(item => `
       <div class="receipt-row">
         <div class="receipt-row-left">
@@ -877,6 +1010,7 @@
         <div class="receipt-row-price">${formatPrice(item.itemTotal || item.priceEach * item.quantity)}</div>
       </div>
     `).join('');
+
         document.getElementById('receiptTotal').textContent = formatPrice(receipt.total);
         document.getElementById('modalBg').classList.add('open');
     }
@@ -885,6 +1019,7 @@
         document.getElementById('modalBg').classList.remove('open');
     }
 
+    // ── TOAST ────────────────────────────────────────
     let toastTimer;
     function showToast(msg, type = '') {
         const t = document.getElementById('toast');
@@ -894,6 +1029,7 @@
         toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
     }
 
+    // ── UTILS ────────────────────────────────────────
     function formatPrice(n) {
         return Number(n).toLocaleString('ru', { minimumFractionDigits: 2 }) + ' ₽';
     }

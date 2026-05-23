@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — Магазин</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f7;
+            --white: #ffffff;
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-light: #a1a1a6;
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --danger: #ff3b30;
+            --success: #34c759;
+            --border: #d2d2d7;
+            --border-light: #e8e8ed;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 8px 32px rgba(0,0,0,0.1);
+            --shadow-lg: 0 24px 64px rgba(0,0,0,0.12);
+            --radius: 18px;
+            --radius-sm: 10px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            border-bottom: 1px solid var(--border-light);
+            background: rgba(245,245,247,0.85);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 500; color: var(--text); text-decoration: none; }
+        .nav-back { font-size: 0.8rem; color: var(--text-light); text-decoration: none; transition: color 0.15s; }
+        .nav-back:hover { color: var(--accent); }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .form-wrap {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: var(--shadow-lg);
+            animation: fadeUp 0.4s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-header { margin-bottom: 32px; }
+        .form-emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
+        .form-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: -0.5px; margin-bottom: 6px; }
+        .form-sub { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .field label { font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.3px; }
+
+        .field input {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text);
+            transition: all 0.15s;
+            outline: none;
+            width: 100%;
+        }
+        .field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,113,227,0.1); }
+        .field input.error { border-color: var(--danger); }
+
+        .field-hint { font-size: 0.7rem; color: var(--text-light); margin-top: 2px; }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 100px;
+            padding: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+            box-shadow: 0 4px 16px rgba(0,113,227,0.3);
+        }
+        .submit-btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,113,227,0.4); }
+        .submit-btn:disabled { background: var(--border); color: var(--text-light); box-shadow: none; transform: none; cursor: not-allowed; }
+
+        .error-msg { font-size: 0.78rem; color: var(--danger); min-height: 20px; margin-top: 8px; text-align: center; }
+
+        .success-msg {
+            background: rgba(52,199,89,0.08);
+            border: 1px solid rgba(52,199,89,0.3);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            font-size: 0.82rem;
+            color: var(--success);
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .form-footer { text-align: center; margin-top: 24px; font-size: 0.82rem; color: var(--text-light); }
+        .form-footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        .form-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/index.html" class="nav-logo">Магазин</a>
+    <a href="/auth.html" class="nav-back">← Назад</a>
+</nav>
+
+<main>
+    <div class="form-wrap">
+        <div class="form-header">
+            <span class="form-emoji">✨</span>
+            <h1 class="form-title">Регистрация</h1>
+            <p class="form-sub">Создайте аккаунт — это займёт минуту</p>
+        </div>
+
+        <div class="fields-row">
+            <div class="field">
+                <label>Имя *</label>
+                <input type="text" id="firstName" placeholder="Иван" autocomplete="given-name" required minlength="2" maxlength="30">
+            </div>
+            <div class="field">
+                <label>Фамилия *</label>
+                <input type="text" id="lastName" placeholder="Иванов" autocomplete="family-name" required minlength="2" maxlength="30">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Логин *</label>
+            <input type="text" id="username" placeholder="ivan_ivanov" autocomplete="username">
+            <span class="field-hint">Только латинские буквы, цифры и _ (от 3 до 30 символов)</span>
+        </div>
+
+        <div class="field">
+            <label>Email *</label>
+            <input type="email" id="email" placeholder="ivan@mail.ru" autocomplete="email">
+        </div>
+
+        <div class="field">
+            <label>Пароль *</label>
+            <input type="password" id="password" placeholder="••••••••" autocomplete="new-password">
+            <span class="field-hint">Минимум 6 символов</span>
+        </div>
+
+        <button class="submit-btn" id="submitBtn" onclick="doRegister()">Создать аккаунт</button>
+        <div class="error-msg" id="errorMsg"></div>
+        <div class="success-msg" id="successMsg">
+            ✓ Аккаунт создан! Перенаправляем...
+        </div>
+
+        <div class="form-footer">
+            Уже есть аккаунт? <a href="/login.html">Войти</a>
+        </div>
+    </div>
+</main>
+
+<script>
+    // если уже залогинен — редирект
+    fetch('/auth/me').then(r => {
+        if (r.ok) window.location.href = '/index.html';
+    });
+
+    async function doRegister() {
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const btn = document.getElementById('submitBtn');
+
+        errorMsg.textContent = '';
+        successMsg.style.display = 'none';
+
+        // клиентская валидация
+        if (!firstName || !lastName || !username || !email || !password) {
+            errorMsg.textContent = 'Заполните все обязательные поля (*)';
+            return;
+        }
+        if (firstName.length < 2 || lastName.length < 2) {
+            errorMsg.textContent = 'Имя и фамилия должны быть не менее 2 символов';
+            return;
+        }
+        if (password.length < 6) {
+            errorMsg.textContent = 'Пароль должен быть не менее 6 символов';
+            document.getElementById('password').classList.add('error');
+            return;
+        }
+        if (!email.includes('@')) {
+            errorMsg.textContent = 'Введите корректный email';
+            document.getElementById('email').classList.add('error');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Создаём аккаунт...';
+
+        try {
+            const r = await fetch('/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ firstName, lastName, username, email, password })
+            });
+
+            if (r.ok) {
+                // автоматически логиним после регистрации
+                await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                successMsg.style.display = 'block';
+                setTimeout(() => window.location.href = '/index.html', 1200);
+
+            } else {
+                const err = await r.json().catch(() => ({}));
+                errorMsg.textContent = err.message || 'Ошибка регистрации';
+            }
+        } catch (e) {
+            errorMsg.textContent = 'Нет соединения с сервером';
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Создать аккаунт';
+        }
+    }
+
+    // убрать ошибку при вводе
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => {
+            input.classList.remove('error');
+            document.getElementById('errorMsg').textContent = '';
+        });
+    });
+</script>
+</body>
+</html>

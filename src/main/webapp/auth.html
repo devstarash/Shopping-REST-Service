@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Войти — Магазин</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f7;
+            --white: #ffffff;
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-light: #a1a1a6;
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --border: #d2d2d7;
+            --border-light: #e8e8ed;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 8px 32px rgba(0,0,0,0.1);
+            --shadow-lg: 0 24px 64px rgba(0,0,0,0.12);
+            --radius: 18px;
+            --radius-sm: 10px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            border-bottom: 1px solid var(--border-light);
+            background: rgba(245,245,247,0.85);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-back {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--accent); }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .auth-wrap {
+            width: 100%;
+            max-width: 480px;
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .auth-emoji { font-size: 3rem; margin-bottom: 16px; display: block; }
+
+        .auth-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .auth-title em { font-style: italic; color: var(--text-secondary); }
+
+        .auth-sub {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .cards-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .auth-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            text-decoration: none;
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid transparent;
+            transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .auth-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .auth-card.primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 20px rgba(0,113,227,0.3);
+        }
+        .auth-card.primary:hover {
+            background: var(--accent-hover);
+            border-color: transparent;
+            box-shadow: 0 8px 28px rgba(0,113,227,0.4);
+        }
+
+        .card-icon { font-size: 2rem; }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        .card-desc {
+            font-size: 0.78rem;
+            opacity: 0.7;
+            line-height: 1.5;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 24px 0;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            position: relative;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: var(--border-light);
+        }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/index.html" class="nav-logo">Магазин</a>
+    <a href="/index.html" class="nav-back">← Вернуться в магазин</a>
+</nav>
+
+<main>
+    <div class="auth-wrap">
+        <div class="auth-header">
+            <span class="auth-emoji">🛍️</span>
+            <h1 class="auth-title">Добро<br><em>пожаловать</em></h1>
+            <p class="auth-sub">Войдите или создайте аккаунт для покупок</p>
+        </div>
+
+        <div class="cards-row">
+            <a href="/login.html" class="auth-card primary">
+                <span class="card-icon">👋</span>
+                <div class="card-title">Войти</div>
+                <div class="card-desc">Уже есть аккаунт? Войдите чтобы оформить заказ</div>
+            </a>
+
+            <a href="/register.html" class="auth-card">
+                <span class="card-icon">✨</span>
+                <div class="card-title">Регистрация</div>
+                <div class="card-desc">Создайте аккаунт — это займёт меньше минуты</div>
+            </a>
+        </div>
+
+        <div class="divider">или продолжите как гость</div>
+
+        <a href="/index.html" style="display:block;text-align:center;font-size:0.82rem;color:var(--text-light);text-decoration:none;transition:color 0.15s"
+           onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-light)'">
+            Смотреть товары без входа →
+        </a>
+    </div>
+</main>
+
+</body>
+</html>
