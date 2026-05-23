@@ -1,5 +1,8 @@
 package ru.starashchuk.shopping.service.configs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +31,7 @@ public class SpringConfig implements WebMvcConfigurer {
                 .addResourceLocations("/")
                 .setCachePeriod(3600);
     }
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter converter =
@@ -37,12 +41,28 @@ public class SpringConfig implements WebMvcConfigurer {
         );
         converters.add(converter);
     }
+
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public MappingJackson2HttpMessageConverter jacksonConverter() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        MappingJackson2HttpMessageConverter converter =
+                new MappingJackson2HttpMessageConverter(mapper);
+        converter.setSupportedMediaTypes(
+                List.of(new MediaType("application", "json", StandardCharsets.UTF_8))
+        );
+        return converter;
     }
 }
