@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.starashchuk.email.EmailConfig;
+import ru.starashchuk.email.EmailService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -64,5 +67,19 @@ public class SpringConfig implements WebMvcConfigurer {
                 List.of(new MediaType("application", "json", StandardCharsets.UTF_8))
         );
         return converter;
+    }
+
+    @Bean
+    public EmailConfig emailConfig(
+            @Value("${mail.host}") String host,
+            @Value("${mail.port}") int port,
+            @Value("${mail.username}") String username,
+            @Value("${mail.password}") String password) {
+        return new EmailConfig(host, port, username, password);
+    }
+
+    @Bean
+    public EmailService emailService(EmailConfig emailConfig) {
+        return new EmailService(emailConfig);
     }
 }
