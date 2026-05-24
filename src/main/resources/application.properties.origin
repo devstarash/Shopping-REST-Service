@@ -3,3 +3,7 @@ db.username=YOUR_USERNAME
 db.password=YOUR_PASSWORD
 admin.username = YOUR_ADMINISTRATOR_NAME
 admin.password = YOUR_ADMINISTRATOR_PASSWORD
+mail.host=smtp.gmail.com
+mail.port=587
+mail.username=your@gmail.com
+mail.password=xxxx xxxx xxxx xxxx
