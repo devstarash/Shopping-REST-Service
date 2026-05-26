@@ -43,10 +43,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO dto, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO dto, HttpSession session) {
         User user = userService.login(dto.getUsername(), dto.getPassword());
         session.setAttribute("user", user);
-        return ResponseEntity.ok("Успешный вход");
+        return ResponseEntity.ok(Map.of("role", user.getRole()));
     }
 
     @PostMapping("/logout")
