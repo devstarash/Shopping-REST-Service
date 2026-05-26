@@ -37,7 +37,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Блок загрузки при проверке прав */
         .loading-screen {
             position: fixed;
             inset: 0;
@@ -51,11 +50,9 @@
             transition: opacity 0.3s;
         }
 
-        /* MAIN APP */
         .app { display: none; }
         .app.visible { display: block; }
 
-        /* NAV */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -70,330 +67,79 @@
             padding: 0 32px;
         }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: var(--text);
-            text-decoration: none;
-        }
-
-        .nav-badge {
-            background: var(--accent);
-            color: white;
-            border-radius: 6px;
-            padding: 2px 8px;
-            font-size: 0.68rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        .logout-btn {
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            padding: 7px 16px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+        .nav-left { display: flex; align-items: center; gap: 12px; }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 500; color: var(--text); text-decoration: none; }
+        .nav-badge { background: var(--accent); color: white; border-radius: 6px; padding: 2px 8px; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.5px; }
+        .logout-btn { background: none; border: 1px solid var(--border); border-radius: 100px; padding: 7px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; }
         .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
 
-        /* PAGE */
-        .page {
-            padding-top: 80px;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding-left: 32px;
-            padding-right: 32px;
-            padding-bottom: 80px;
-        }
+        .page { padding-top: 80px; max-width: 1100px; margin: 0 auto; padding-left: 32px; padding-right: 32px; padding-bottom: 80px; }
+        .page-header { padding: 40px 0 32px; border-bottom: 1px solid var(--border-light); margin-bottom: 32px; }
+        .page-label { font-size: 0.78rem; font-weight: 500; color: var(--accent); letter-spacing: 0.5px; margin-bottom: 8px; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; letter-spacing: -0.5px; line-height: 1.1; }
+        .page-title em { font-style: italic; color: var(--text-secondary); }
 
-        .page-header {
-            padding: 40px 0 32px;
-            border-bottom: 1px solid var(--border-light);
-            margin-bottom: 32px;
-        }
+        /* DATE PICKER COMPONENT */
+        .date-section { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+        .date-label { font-size: 0.82rem; color: var(--text-secondary); font-weight: 400; }
+        .date-input { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text); outline: none; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+        .date-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,113,227,0.1); }
+        .load-btn { background: var(--accent); color: white; border: none; border-radius: 100px; padding: 10px 24px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 12px rgba(0,113,227,0.25); }
+        .load-btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,113,227,0.35); }
+        .load-btn:disabled { background: var(--border); color: var(--text-light); box-shadow: none; transform: none; cursor: not-allowed; }
 
-        .page-label {
-            font-size: 0.78rem;
-            font-weight: 500;
-            color: var(--accent);
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
+        /* GRID FOR VISUAL LAYOUT */
+        .analytics-grid { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; margin-top: 32px; }
+        @media (max-width: 850px) { .analytics-grid { grid-template-columns: 1fr; } }
 
-        .page-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 400;
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-
-        .page-title em {
-            font-style: italic;
-            color: var(--text-secondary);
-        }
-
-        /* DATE PICKER */
-        .date-section {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-        }
-
-        .date-label {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .date-input {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 10px 16px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.88rem;
-            color: var(--text);
-            outline: none;
-            transition: all 0.15s;
-            box-shadow: var(--shadow-sm);
-        }
-        .date-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
-        }
-
-        .load-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 100px;
-            padding: 10px 24px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 12px rgba(0,113,227,0.25);
-        }
-        .load-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(0,113,227,0.35);
-        }
-        .load-btn:disabled {
-            background: var(--border);
-            color: var(--text-light);
-            box-shadow: none;
-            transform: none;
-            cursor: not-allowed;
-        }
+        .right-column-container { display: flex; flex-direction: column; gap: 24px; }
 
         /* STATS CARDS */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 28px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid transparent;
-            transition: all 0.25s;
-            animation: fadeUp 0.4s ease both;
-        }
-        .stat-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-            border-color: var(--border-light);
-        }
-
-        .stat-icon {
-            font-size: 1.8rem;
-            margin-bottom: 16px;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            margin-bottom: 6px;
-            letter-spacing: 0.3px;
-        }
-
-        .stat-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 500;
-            letter-spacing: -0.5px;
-            color: var(--text);
-        }
-
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--white); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid transparent; transition: all 0.25s; }
+        .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border-light); }
+        .stat-icon { font-size: 1.6rem; margin-bottom: 12px; display: block; }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 400; margin-bottom: 4px; letter-spacing: 0.3px; }
+        .stat-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 500; letter-spacing: -0.5px; color: var(--text); }
         .stat-value.accent { color: var(--accent); }
         .stat-value.success { color: var(--success); }
 
-        /* TABLE */
-        .table-section {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-            animation: fadeUp 0.4s ease 0.1s both;
-        }
+        /* TABLES & CARDS */
+        .table-section { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+        .table-header { padding: 20px 24px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+        .table-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 400; }
+        .table-count { font-size: 0.78rem; color: var(--text-light); background: var(--bg); padding: 4px 10px; border-radius: 100px; }
 
-        .table-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .table-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            font-weight: 400;
-        }
-
-        .table-count {
-            font-size: 0.78rem;
-            color: var(--text-light);
-            background: var(--bg);
-            padding: 4px 10px;
-            border-radius: 100px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead tr {
-            background: var(--bg);
-        }
-
-        th {
-            padding: 12px 24px;
-            text-align: left;
-            font-size: 0.72rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        td {
-            padding: 14px 24px;
-            font-size: 0.88rem;
-            border-bottom: 1px solid var(--border-light);
-            font-weight: 300;
-        }
-
+        table { width: 100%; border-collapse: collapse; }
+        thead tr { background: var(--bg); }
+        th { padding: 12px 24px; text-align: left; font-size: 0.72rem; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.5px; text-transform: uppercase; }
+        td { padding: 14px 24px; font-size: 0.88rem; border-bottom: 1px solid var(--border-light); font-weight: 300; }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: rgba(0,113,227,0.02); }
 
-        .rank-cell {
-            font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            color: var(--text-light);
-            font-weight: 400;
-            width: 40px;
-        }
-
+        .rank-cell { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text-light); font-weight: 400; width: 40px; }
         .rank-1 { color: var(--warning); }
         .rank-2 { color: var(--text-secondary); }
         .rank-3 { color: #a0522d; }
+        .qty-pill { display: inline-flex; align-items: center; background: rgba(0,113,227,0.08); color: var(--accent); border-radius: 100px; padding: 3px 10px; font-size: 0.78rem; font-weight: 500; }
 
-        .qty-pill {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(0,113,227,0.08);
-            color: var(--accent);
-            border-radius: 100px;
-            padding: 3px 10px;
-            font-size: 0.78rem;
-            font-weight: 500;
-        }
+        /* BAR CHART VIA CSS */
+        .bar-wrap { display: flex; align-items: center; gap: 10px; flex: 1; }
+        .bar-bg { flex: 1; height: 6px; background: var(--border-light); border-radius: 100px; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #34aadc); border-radius: 100px; transition: width 0.6s ease; }
 
-        /* BAR CHART */
-        .bar-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-        }
-
-        .bar-bg {
-            flex: 1;
-            height: 6px;
-            background: var(--border-light);
-            border-radius: 100px;
-            overflow: hidden;
-        }
-
-        .bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), #34aadc);
-            border-radius: 100px;
-            transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-        }
-
-        /* EMPTY / LOADING */
-        .state-box {
-            padding: 60px 24px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+        .state-box { padding: 60px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
         .state-icon { font-size: 2.5rem; opacity: 0.2; }
         .state-text { font-size: 0.85rem; color: var(--text-secondary); }
 
-        /* TOAST */
-        .toast {
-            position: fixed;
-            bottom: 28px;
-            left: 50%;
-            transform: translateX(-50%) translateY(60px);
-            background: var(--text);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            z-index: 400;
-            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-            white-space: nowrap;
-            box-shadow: var(--shadow-md);
-        }
+        .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--text); color: white; padding: 10px 20px; border-radius: 100px; font-size: 0.8rem; z-index: 400; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); white-space: nowrap; box-shadow: var(--shadow-md); }
         .toast.show { transform: translateX(-50%) translateY(0); }
         .toast.error { background: var(--danger); }
-        .toast.success { background: var(--success); }
     </style>
 </head>
 <body>
 
-<div class="loading-screen" id="loadingScreen">
-    Проверка доступа...
-</div>
+<div class="loading-screen" id="loadingScreen">Проверка доступа...</div>
 
 <div class="app" id="app">
     <nav>
@@ -406,40 +152,104 @@
 
     <div class="page">
         <div class="page-header">
-            <div class="page-label">Аналитика продаж</div>
-            <h1 class="page-title">Отчёты <em>магазина</em></h1>
+            <div class="page-label">Бизнес аналитика</div>
+            <h1 class="page-title">Контроль <em>показателей</em></h1>
         </div>
 
         <div class="date-section">
-            <span class="date-label">Выберите дату</span>
-            <input type="date" class="date-input" id="dateInput">
-            <button class="load-btn" id="loadBtn" onclick="loadData()">Загрузить отчёт</button>
+            <span class="date-label">Период с:</span>
+            <input type="date" class="date-input" id="dateFrom">
+            <span class="date-label">по:</span>
+            <input type="date" class="date-input" id="dateTo">
+            <button class="load-btn" id="loadBtn" onclick="loadAnalytics()">Сформировать отчет</button>
         </div>
 
         <div class="stats-row" id="statsRow" style="display:none">
             <div class="stat-card">
                 <span class="stat-icon">💰</span>
-                <div class="stat-label">Выручка за день</div>
+                <div class="stat-label">Общая выручка</div>
                 <div class="stat-value accent" id="revenueVal">—</div>
             </div>
             <div class="stat-card">
-                <span class="stat-icon">📦</span>
-                <div class="stat-label">Наименований продано</div>
-                <div class="stat-value success" id="itemsCountVal">—</div>
+                <span class="stat-icon">📈</span>
+                <div class="stat-label">Чистая прибыль</div>
+                <div class="stat-value success" id="profitVal">—</div>
             </div>
             <div class="stat-card">
-                <span class="stat-icon">🏆</span>
-                <div class="stat-label">Лидер продаж</div>
-                <div class="stat-value" id="topProductVal" style="font-size:1.1rem">—</div>
+                <span class="stat-icon">🛒</span>
+                <div class="stat-label">Количество чеков</div>
+                <div class="stat-value" id="ordersCountVal">—</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">📊</span>
+                <div class="stat-label">Средний чек</div>
+                <div class="stat-value" id="avgCheckVal">—</div>
             </div>
         </div>
 
-        <div class="table-section" id="tableSection">
+        <div class="analytics-grid" id="analyticsGrid" style="display:none">
+
+            <div class="table-section">
+                <div class="table-header">
+                    <div class="table-title">Лидеры продаж (Топ-5 товаров)</div>
+                    <span class="table-count" id="productsCount">0 позиций</span>
+                </div>
+                <table id="productsTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Товар</th>
+                        <th>Продано</th>
+                        <th>Доля в штуках</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="right-column-container">
+
+                <div class="table-section">
+                    <div class="table-header">
+                        <div class="table-title">Продажи по категориям</div>
+                    </div>
+                    <table id="categoriesTable">
+                        <thead>
+                        <tr>
+                            <th>Категория</th>
+                            <th>Выручка</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="table-section">
+                    <div class="table-header">
+                        <div class="table-title">Активность по часам (Заказы)</div>
+                    </div>
+                    <table id="hourlyTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 70px;">Время</th>
+                            <th>Количество заказов</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="table-section" id="placeholderSection">
             <div class="state-box">
-                <div class="state-icon">📅</div>
-                <div class="state-text">Выберите дату и нажмите «Загрузить отчёт»</div>
+                <div class="state-icon">📈</div>
+                <div class="state-text">Укажите диапазон дат и нажмите кнопку для расчета статистики бизнеса</div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -447,158 +257,159 @@
 
 <script>
     const BASE_URL = '';
-    let currentData = [];
 
-    // Инициализация страницы
     checkAdminAuth();
 
-    // ── AUTH CHECK ───────────────────────────────────
     async function checkAdminAuth() {
         try {
-            // Спрашиваем у UserController текущего юзера в сессии
             const r = await fetch(`${BASE_URL}/auth/me`);
             if (r.ok) {
                 const user = await r.json();
-                // Проверяем роль (переводим в верхний регистр на всякий случай)
                 if (user.role && user.role.toUpperCase() === 'ADMIN') {
-                    // Всё супер, скрываем экран загрузки и показываем админку
                     document.getElementById('loadingScreen').style.opacity = '0';
                     setTimeout(() => document.getElementById('loadingScreen').remove(), 300);
-
                     document.getElementById('app').classList.add('visible');
-                    document.getElementById('dateInput').value = getTodayDate();
+
+                    const today = getTodayDate();
+                    document.getElementById('dateTo').value = today;
+                    document.getElementById('dateFrom').value = today.substring(0, 8) + '01';
                     return;
                 }
             }
-            // Если не авторизован или роль не ADMIN — выкидываем на страницу логина
             window.location.href = '/login.html';
         } catch (e) {
-            console.error(e);
             window.location.href = '/login.html';
         }
     }
 
     async function logout() {
-        try {
-            // Вызываем твой метод logout бэкенда для очистки сессии
-            await fetch(`${BASE_URL}/auth/logout`, { method: 'POST' });
-        } catch (e) {
-            console.error('Ошибка при выходе:', e);
-        }
+        try { await fetch(`${BASE_URL}/auth/logout`, { method: 'POST' }); } catch (e) {}
         window.location.href = '/login.html';
     }
 
-    // ── DATA LOADING ─────────────────────────────────
-    async function loadData() {
-        const date = document.getElementById('dateInput').value;
-        if (!date) { showToast('Выберите дату', 'error'); return; }
+    async function loadAnalytics() {
+        const from = document.getElementById('dateFrom').value;
+        const to = document.getElementById('dateTo').value;
+        if (!from || !to) { showToast('Выберите обе даты диапазона', 'error'); return; }
 
         const btn = document.getElementById('loadBtn');
         btn.disabled = true;
-        btn.textContent = 'Загрузка...';
+        btn.textContent = 'Расчет...';
 
         try {
-            // Больше никаких Headers с авторизацией, бэкенд сам всё поймёт по сессионной куке!
-            const [revenueRes, soldRes] = await Promise.all([
-                fetch(`${BASE_URL}/admin/reports/revenue?date=${date}`),
-                fetch(`${BASE_URL}/admin/reports/sold?date=${date}`)
+            const [summaryRes, topProductsRes, categoriesRes, hourlyRes] = await Promise.all([
+                fetch(`${BASE_URL}/admin/reports/summary?from=${from}&to=${to}`),
+                fetch(`${BASE_URL}/admin/reports/top-products?from=${from}&to=${to}&limit=5`),
+                fetch(`${BASE_URL}/admin/reports/categories?from=${from}&to=${to}`),
+                fetch(`${BASE_URL}/admin/reports/hourly?from=${from}&to=${to}`)
             ]);
 
-            if (revenueRes.status === 401 || soldRes.status === 401 || revenueRes.status === 403) {
-                showToast('Сессия истекла или недостаточно прав', 'error');
+            if (summaryRes.status === 401 || summaryRes.status === 403) {
+                showToast('Сессия истекла', 'error');
                 setTimeout(() => window.location.href = '/login.html', 1500);
                 return;
             }
 
-            const revenue = await revenueRes.json();
-            const sold = await soldRes.json();
-            currentData = sold;
+            const summary = await summaryRes.json();
+            const topProducts = await topProductsRes.json();
+            const categories = await categoriesRes.json();
+            const hourlyData = await hourlyRes.json();
 
-            renderStats(revenue, sold);
-            renderTable(sold, date);
+            document.getElementById('placeholderSection').style.display = 'none';
+            renderKPIs(summary);
+            renderProductsTable(topProducts);
+            renderCategoriesTable(categories);
+            renderHourlyTable(hourlyData);
 
         } catch (e) {
-            showToast('Ошибка загрузки данных', 'error');
+            showToast('Ошибка выгрузки бизнес-отчета', 'error');
             console.error(e);
         } finally {
             btn.disabled = false;
-            btn.textContent = 'Загрузить отчёт';
+            btn.textContent = 'Сформировать отчет';
         }
     }
 
-    function renderStats(revenue, sold) {
+    function renderKPIs(summary) {
         document.getElementById('statsRow').style.display = 'grid';
-        document.getElementById('revenueVal').textContent = formatPrice(revenue);
-        document.getElementById('itemsCountVal').textContent = sold.length + ' шт.';
-        document.getElementById('topProductVal').textContent =
-            sold.length > 0 ? sold[0].productName : '—';
+        document.getElementById('revenueVal').textContent = formatPrice(summary.totalRevenue);
+        document.getElementById('profitVal').textContent = formatPrice(summary.totalProfit);
+        document.getElementById('ordersCountVal').textContent = summary.totalOrders + ' шт.';
+        document.getElementById('avgCheckVal').textContent = formatPrice(summary.averageCheck);
     }
 
-    function renderTable(sold, date) {
-        const section = document.getElementById('tableSection');
+    function renderProductsTable(products) {
+        document.getElementById('analyticsGrid').style.display = 'grid';
+        document.getElementById('productsCount').textContent = products.length + ' позиций';
 
-        if (!sold.length) {
-            section.innerHTML = `
-        <div class="state-box">
-          <div class="state-icon">🔍</div>
-          <div class="state-text">Продаж за ${formatDate(date)} не найдено</div>
-        </div>`;
+        const tbody = document.querySelector('#productsTable tbody');
+        if (!products.length) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">Нет продаж за период</td></tr>`;
             return;
         }
 
-        const maxQty = Math.max(...sold.map(i => i.totalSold));
-
-        section.innerHTML = `
-      <div class="table-header">
-        <div class="table-title">Продажи за ${formatDate(date)}</div>
-        <span class="table-count">${sold.length} позиций</span>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Товар</th>
-            <th>Продано</th>
-            <th style="min-width:200px">Доля</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${sold.map((item, i) => `
+        const maxQty = Math.max(...products.map(p => p.totalSold));
+        tbody.innerHTML = products.map((p, i) => `
             <tr>
-              <td class="rank-cell rank-${i+1}">${i + 1}</td>
-              <td>${item.productName}</td>
-              <td><span class="qty-pill">${item.totalSold} шт.</span></td>
-              <td>
-                <div class="bar-wrap">
-                  <div class="bar-bg">
-                    <div class="bar-fill" style="width: ${maxQty > 0 ? Math.round(item.totalSold / maxQty * 100) : 0}%"></div>
-                  </div>
-                  <span style="font-size:0.72rem;color:var(--text-light);min-width:30px">
-                    ${maxQty > 0 ? Math.round(item.totalSold / maxQty * 100) : 0}%
-                  </span>
-                </div>
-              </td>
+                <td class="rank-cell rank-${i+1}">${i + 1}</td>
+                <td>${p.productName}</td>
+                <td><span class="qty-pill">${p.totalSold} шт.</span></td>
+                <td>
+                    <div class="bar-wrap">
+                        <div class="bar-bg"><div class="bar-fill" style="width: ${maxQty > 0 ? Math.round(p.totalSold / maxQty * 100) : 0}%"></div></div>
+                        <span style="font-size:0.72rem;color:var(--text-light)">${maxQty > 0 ? Math.round(p.totalSold / maxQty * 100) : 0}%</span>
+                    </div>
+                </td>
             </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    `;
+        `).join('');
     }
 
-    // ── UTILS ────────────────────────────────────────
-    function getTodayDate() {
-        return new Date().toISOString().split('T')[0];
+    function renderCategoriesTable(categories) {
+        const tbody = document.querySelector('#categoriesTable tbody');
+        if (!categories.length) {
+            tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary)">Нет данных</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = categories.map(c => `
+            <tr>
+                <td><strong>${c.categoryName || 'Без категории'}</strong></td>
+                <td style="font-weight:400;color:var(--accent)">${formatPrice(c.totalRevenue)}</td>
+            </tr>
+        `).join('');
     }
 
-    function formatDate(dateStr) {
-        return new Date(dateStr).toLocaleDateString('ru', {
-            day: 'numeric', month: 'long', year: 'numeric'
-        });
+    function renderHourlyTable(hourlyData) {
+        const tbody = document.querySelector('#hourlyTable tbody');
+        if (!hourlyData.length) {
+            tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary)">Нет данных о времени продаж</td></tr>`;
+            return;
+        }
+
+        const maxOrders = Math.max(...hourlyData.map(h => h.ordersCount));
+        tbody.innerHTML = hourlyData.map(h => {
+            const hourValue = h.saleHour !== undefined ? h.saleHour : h.hour;
+            const formattedHour = String(hourValue).padStart(2, '0') + ':00';
+            const percentage = maxOrders > 0 ? Math.round((h.ordersCount / maxOrders) * 100) : 0;
+
+            return `
+                <tr>
+                    <td style="color: var(--text-secondary); font-weight: 400;">${formattedHour}</td>
+                    <td>
+                        <div class="bar-wrap">
+                            <div class="bar-bg">
+                                <div class="bar-fill" style="width: ${percentage}%; background: linear-gradient(90deg, var(--success), #34c759);"></div>
+                            </div>
+                            <span style="font-weight: 500; min-width: 40px; text-align: right; font-size: 0.8rem">${h.ordersCount} шт.</span>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
     }
 
-    function formatPrice(n) {
-        return Number(n).toLocaleString('ru', { minimumFractionDigits: 2 }) + ' ₽';
-    }
+    function getTodayDate() { return new Date().toISOString().split('T')[0]; }
+    function formatPrice(n) { return Number(n).toLocaleString('ru', { minimumFractionDigits: 2 }) + ' ₽'; }
 
     let toastTimer;
     function showToast(msg, type = '') {
