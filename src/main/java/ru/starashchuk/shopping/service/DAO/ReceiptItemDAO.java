@@ -17,7 +17,7 @@ public class ReceiptItemDAO {
     }
 
     public void save(Connection conn, ReceiptItem receiptItem) {
-        String sql = "INSERT INTO receipt_items (receipt_id, product_id, quantity, price_each) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO receipt_items (receipt_id, product_id, quantity, price_each, purchase_price) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -25,10 +25,12 @@ public class ReceiptItemDAO {
             ps.setInt(2, receiptItem.getProductId());
             ps.setInt(3, receiptItem.getQuantity());
             ps.setBigDecimal(4, receiptItem.getPrice());
+            ps.setBigDecimal(5, receiptItem.getPurchasePrice()); // Устанавливаем цену закупки!
+
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DatabaseException("Ошибка базы данных", e);
+            throw new DatabaseException("Ошибка базы данных при сохранении позиции чека", e);
         }
     }
 }

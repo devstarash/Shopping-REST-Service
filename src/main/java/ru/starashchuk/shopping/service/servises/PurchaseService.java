@@ -30,6 +30,7 @@ public class PurchaseService {
     private ReceiptDAO receiptDAO;
     private ReceiptItemDAO receiptItemDAO;
     private DBConnection dbConnection;
+
     @Autowired
     public PurchaseService(ProductDAO productDAO, ReceiptDAO receiptDAO, ReceiptItemDAO receiptItemDAO, DBConnection dbConnection) {
         this.productDAO = productDAO;
@@ -41,10 +42,8 @@ public class PurchaseService {
     public PurchaseResponseDTO purchase(PurchaseRequestDTO request, int userId) {
         List<PurchaseItemDTO> purchaseItems = request.getItems();
         Map<Integer, Product> products = new HashMap<>();
-
         for (PurchaseItemDTO item : purchaseItems) {
             Product product = productDAO.findById(item.getProductId());
-
             if (product.getStock() < item.getQuantity()) {
                 throw new InsufficientStockException(
                         product.getName(),
@@ -54,7 +53,6 @@ public class PurchaseService {
             }
             products.put(product.getId(), product);
         }
-
         try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
             try {
@@ -62,36 +60,29 @@ public class PurchaseService {
                 receipt.setDate(LocalDateTime.now());
                 receipt.setUserId(userId);
                 int receiptId = receiptDAO.save(connection, receipt);
-
                 List<ReceiptItemDTO> receiptItems = new ArrayList<>();
                 BigDecimal total = BigDecimal.ZERO;
-
                 for (PurchaseItemDTO item : purchaseItems) {
                     Product product = products.get(item.getProductId());
-
                     ReceiptItem receiptItem = new ReceiptItem();
                     receiptItem.setProductId(product.getId());
                     receiptItem.setPrice(product.getPrice());
                     receiptItem.setQuantity(item.getQuantity());
                     receiptItem.setReceiptId(receiptId);
+                    receiptItem.setPurchasePrice(product.getPurchasePrice());
                     receiptItemDAO.save(connection, receiptItem);
-
                     productDAO.updateStock(connection, product.getId(), item.getQuantity());
-
                     BigDecimal itemTotal = product.getPrice()
                             .multiply(BigDecimal.valueOf(item.getQuantity()));
                     total = total.add(itemTotal);
-
                     receiptItems.add(new ReceiptItemDTO(
                             product.getName(),
                             item.getQuantity(),
                             product.getPrice()
                     ));
                 }
-
                 connection.commit();
                 return new PurchaseResponseDTO(receiptId, LocalDateTime.now(), receiptItems, total);
-
             } catch (Exception e) {
                 connection.rollback();
                 throw new RuntimeException(e);
