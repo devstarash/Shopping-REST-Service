@@ -22,8 +22,8 @@ public class UserDAO {
     }
 
     public void save(User user) {
-        String SQL = "INSERT INTO users(username, first_name, last_name, email, password) VALUES" +
-                "(?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO users(username, first_name, last_name, email, password, role) VALUES" +
+                "(?, ?, ?, ?, ?, ?)";
         try (Connection connection = dbConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setString(1, user.getUsername());
@@ -31,6 +31,7 @@ public class UserDAO {
             statement.setString(3, user.getLastName());
             statement.setString(4, user.getEmail());
             statement.setString(5, user.getPassword());
+            statement.setString(6, "USER");
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseException("Ошибка базы данных", e);
@@ -106,6 +107,7 @@ public class UserDAO {
         user.setLastName(result.getString("last_name"));
         user.setEmail(result.getString("email"));
         user.setPassword(result.getString("password"));
+        user.setRole(result.getString("role"));
         return user;
     }
 }

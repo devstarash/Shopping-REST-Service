@@ -26,7 +26,6 @@ public class MySpringDispatcherServletInitializer extends AbstractAnnotationConf
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
-        DelegatingFilterProxy securityFilter = new DelegatingFilterProxy("springSecurityFilterChain");
-        return new Filter[]{filter, securityFilter};
+        return new Filter[]{filter};
     }
 }
