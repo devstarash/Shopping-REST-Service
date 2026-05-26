@@ -8,6 +8,15 @@ public class Product {
     private Category category;
     private BigDecimal price;
     private int stock;
+    private BigDecimal purchasePrice;
+
+    public BigDecimal getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(BigDecimal purchasePRice) {
+        this.purchasePrice = purchasePRice;
+    }
 
     public int getId() {
         return id;

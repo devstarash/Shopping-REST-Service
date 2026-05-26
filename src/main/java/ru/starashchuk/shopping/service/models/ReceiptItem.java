@@ -8,6 +8,15 @@ public class ReceiptItem {
     private int productId;
     private int quantity;
     private BigDecimal price;
+    private BigDecimal purchasePrice;
+
+    public BigDecimal getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(BigDecimal purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
 
     public int getId() {
         return id;
