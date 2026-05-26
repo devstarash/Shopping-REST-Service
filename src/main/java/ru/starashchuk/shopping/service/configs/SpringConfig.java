@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.*;
 import ru.starashchuk.email.EmailConfig;
 import ru.starashchuk.email.EmailService;
+
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -45,8 +46,6 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // Используем настроенный jacksonConverter с поддержкой JavaTimeModule,
-        // чтобы даты (LocalDate/LocalDateTime) не превращались в Invalid Date на фронтенде!
         converters.add(jacksonConverter());
     }
 
@@ -64,9 +63,7 @@ public class SpringConfig implements WebMvcConfigurer {
     public MappingJackson2HttpMessageConverter jacksonConverter() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        // Отключаем форматирование дат в виде массивов чисел [2026,5,26]
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
         MappingJackson2HttpMessageConverter converter =
                 new MappingJackson2HttpMessageConverter(mapper);
         converter.setSupportedMediaTypes(
